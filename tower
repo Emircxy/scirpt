@@ -1,0 +1,43 @@
+-- GUI Oluştur
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+screenGui.ResetOnSpawn = false -- Karakter resetlense bile GUI kaybolmaz
+
+-- Arka plan çerçevesi
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 150, 0, 80) -- Butona göre boyut ayarlandı
+frame.Position = UDim2.new(1, -160, 0.4, 0) -- Sağ üst köşe
+frame.BackgroundColor3 = Color3.new(0, 0, 0) -- Siyah arka plan
+frame.BackgroundTransparency = 0.5 -- Yarı saydam
+frame.Parent = screenGui
+
+-- Goto Butonu
+local gotoButton = Instance.new("TextButton")
+gotoButton.Size = UDim2.new(0, 140, 0, 40)
+gotoButton.Position = UDim2.new(0, 5, 0, 5)
+gotoButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2) -- Gri ton
+gotoButton.Text = "GOTO"
+gotoButton.TextColor3 = Color3.new(1, 1, 1) -- Beyaz yazı
+gotoButton.Parent = frame
+
+-- Made By Lear Yazısı
+local madeByText = Instance.new("TextLabel")
+madeByText.Size = UDim2.new(0, 140, 0, 20)
+madeByText.Position = UDim2.new(0, 5, 0, 50) -- Butonun altına koyuldu
+madeByText.BackgroundTransparency = 1 -- Arka plan yok
+madeByText.Text = "Made By Lear"
+madeByText.TextColor3 = Color3.new(1, 1, 1) -- Beyaz yazı
+madeByText.TextScaled = true -- Otomatik boyutlandırma
+madeByText.Parent = frame
+
+-- Işınlanma fonksiyonu
+local function teleportPlayer()
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        character.HumanoidRootPart.CFrame = CFrame.new(-882.649658203125, 346.4999694824219, 792.0174560546875)
+    end
+end
+
+-- Goto Butonu işlevi
+gotoButton.MouseButton1Click:Connect(teleportPlayer)
