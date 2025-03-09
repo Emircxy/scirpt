@@ -1,0 +1,7 @@
+for i = 1, 1000 do --Change this number to whatever recommend to keep as 1000 gives you 10 mil cash if you want more make the number higher but not to high
+    local args = {
+        [1] = game:GetService("Players").LocalPlayer
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("GiveClaimMoney"):FireServer(unpack(args))
+end
