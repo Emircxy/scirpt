@@ -1,0 +1,29 @@
+local player = game:GetService("Players").LocalPlayer
+
+local function teleportParts()
+    while true do
+        local character = player.Character or player.CharacterAdded:Wait()
+        local hrp = character:FindFirstChild("HumanoidRootPart")
+        
+        if hrp then
+            -- "Money" nesnelerini ışınla
+            for _, obj in ipairs(game:GetService("Workspace"):GetDescendants()) do
+                if obj:IsA("MeshPart") and obj.Name == "Money" then
+                    obj.Position = hrp.Position - Vector3.new(0, 3, 0) -- Karakterin altına ışınla
+                end
+            end
+
+            -- "Touch part" nesnelerini ışınla
+            for _, obj in ipairs(game:GetService("Workspace"):GetDescendants()) do
+                if obj:IsA("Part") and obj.Name == "Touch part" then
+                    obj.Position = hrp.Position - Vector3.new(0, 3, 0) -- Karakterin altına ışınla
+                end
+            end
+        end
+
+        wait(3) -- 3 saniye bekle
+    end
+end
+
+-- Start butonuna tıklanınca ışınlama fonksiyonunu başlat
+teleportParts()
