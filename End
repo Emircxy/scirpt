@@ -1,0 +1,108 @@
+-- GUI Kurulumu
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+local gui = Instance.new("ScreenGui", playerGui)
+gui.Name = "TeleportGui"
+gui.ResetOnSpawn = false
+gui.IgnoreGuiInset = true
+
+local customFont = Font.new("rbxassetid://12187371840")
+
+-- Frame
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 280, 0, 200)
+frame.Position = UDim2.new(0.5, -140, -1, 0)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+frame.BackgroundTransparency = 0.15
+frame.BorderSizePixel = 0
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
+frame:TweenPosition(UDim2.new(0.5, -140, 0.35, 0), "Out", "Quad", 1.2, true)
+
+-- Kapat Butonu
+local closeBtn = Instance.new("TextButton", frame)
+closeBtn.Text = "X"
+closeBtn.FontFace = customFont
+closeBtn.TextSize = 14
+closeBtn.Size = UDim2.new(0, 30, 0, 30)
+closeBtn.Position = UDim2.new(1, -35, 0, 5)
+closeBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+closeBtn.TextColor3 = Color3.fromRGB(255, 80, 80)
+Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 6)
+closeBtn.MouseButton1Click:Connect(function() gui:Destroy() end)
+
+-- Logo
+local icon = Instance.new("ImageLabel", frame)
+icon.Image = "rbxassetid://134657895466461"
+icon.Size = UDim2.new(0, 30, 0, 30)
+icon.Position = UDim2.new(0, 5, 0, 5)
+icon.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+icon.BackgroundTransparency = 0.2
+local iconCorner = Instance.new("UICorner", icon)
+iconCorner.CornerRadius = UDim.new(1, 0)
+
+local title = Instance.new("TextLabel", frame)
+title.Text = "Teleport Menu"
+title.FontFace = customFont
+title.TextSize = 18
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Position = UDim2.new(0, 0, 0, 5)
+title.BackgroundTransparency = 1
+title.TextColor3 = Color3.fromRGB(0, 255, 255)
+
+-- Teleport Butonu
+local teleportButton = Instance.new("TextButton", frame)
+teleportButton.Text = "Teleport"
+teleportButton.FontFace = customFont
+teleportButton.TextSize = 14
+teleportButton.Size = UDim2.new(0.8, 0, 0, 40)
+teleportButton.Position = UDim2.new(0.1, 0, 0.4, 0)
+teleportButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+teleportButton.BackgroundTransparency = 0.7
+teleportButton.TextColor3 = Color3.fromRGB(0, 255, 255)
+Instance.new("UICorner", teleportButton).CornerRadius = UDim.new(0, 6)
+
+-- Fonksiyon: Teleport
+teleportButton.MouseButton1Click:Connect(function()
+    player.Character:SetPrimaryPartCFrame(CFrame.new(274.4180908203125, 347.1462707519531, -39.44057846069336))
+end)
+
+-- GUI sürükleme fonksiyonu
+local UIS = game:GetService("UserInputService")
+local dragging = false
+local dragInput, dragStart, startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    frame.Position = UDim2.new(
+        startPos.X.Scale,
+        startPos.X.Offset + delta.X,
+        startPos.Y.Scale,
+        startPos.Y.Offset + delta.Y
+    )
+end
+
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = frame.Position
+
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+frame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+UIS.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
