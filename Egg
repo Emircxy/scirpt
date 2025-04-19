@@ -1,0 +1,109 @@
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "EggESP_GUI"
+gui.ResetOnSpawn = false
+
+-- Ana panel
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 250, 0, 150)
+frame.Position = UDim2.new(0.5, -125, 0.5, -75)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true
+
+-- UI Corner
+local corner = Instance.new("UICorner", frame)
+corner.CornerRadius = UDim.new(0, 10)
+
+-- Başlık ve X butonu
+local title = Instance.new("TextLabel", frame)
+title.Text = "Egg ESP"
+title.Size = UDim2.new(1, -30, 0, 30)
+title.Position = UDim2.new(0, 10, 0, 0)
+title.TextColor3 = Color3.new(1, 1, 1)
+title.BackgroundTransparency = 1
+title.Font = Enum.Font.GothamBold
+title.TextSize = 18
+title.TextXAlignment = Enum.TextXAlignment.Left
+
+local close = Instance.new("TextButton", frame)
+close.Text = "X"
+close.Size = UDim2.new(0, 30, 0, 30)
+close.Position = UDim2.new(1, -30, 0, 0)
+close.TextColor3 = Color3.new(1, 0.2, 0.2)
+close.BackgroundTransparency = 1
+close.Font = Enum.Font.GothamBold
+close.TextSize = 20
+close.MouseButton1Click:Connect(function()
+	gui:Destroy()
+end)
+
+-- Ana buton
+local button = Instance.new("TextButton", frame)
+button.Text = "Activate Egg ESP"
+button.Size = UDim2.new(0.9, 0, 0, 40)
+button.Position = UDim2.new(0.05, 0, 0, 50)
+button.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+button.TextColor3 = Color3.new(1, 1, 1)
+button.Font = Enum.Font.GothamBold
+button.TextSize = 16
+
+local buttonCorner = Instance.new("UICorner", button)
+buttonCorner.CornerRadius = UDim.new(0, 6)
+
+-- Durum etiketi
+local statusLabel = Instance.new("TextLabel", frame)
+statusLabel.Text = ""
+statusLabel.Size = UDim2.new(1, -20, 0, 30)
+statusLabel.Position = UDim2.new(0, 10, 0, 100)
+statusLabel.TextColor3 = Color3.fromRGB(255, 80, 80)
+statusLabel.BackgroundTransparency = 1
+statusLabel.Font = Enum.Font.Gotham
+statusLabel.TextSize = 14
+statusLabel.TextXAlignment = Enum.TextXAlignment.Center
+
+-- Tıklanınca ESP scripti
+button.MouseButton1Click:Connect(function()
+	local RunService = game:GetService("RunService")
+
+	local function createESP(part)
+		if part:FindFirstChild("EggESP") then return end
+
+		local billboard = Instance.new("BillboardGui")
+		billboard.Name = "EggESP"
+		billboard.Adornee = part
+		billboard.Size = UDim2.new(0, 100, 0, 40)
+		billboard.AlwaysOnTop = true
+		billboard.StudsOffset = Vector3.new(0, 2, 0)
+		billboard.Parent = part
+
+		local label = Instance.new("TextLabel")
+		label.Size = UDim2.new(1, 0, 1, 0)
+		label.BackgroundTransparency = 1
+		label.Text = "🥚 Egg"
+		label.TextColor3 = Color3.fromRGB(255, 255, 0)
+		label.TextStrokeTransparency = 0.5
+		label.TextScaled = true
+		label.Parent = billboard
+	end
+
+	local function updateESP()
+		local folder = workspace:FindFirstChild("ActiveEggs")
+		if folder then
+			statusLabel.Text = ""
+			for _, obj in pairs(folder:GetDescendants()) do
+				if obj:IsA("BasePart") then
+					createESP(obj)
+				end
+			end
+		else
+			statusLabel.Text = "Egg not found, please wait..."
+		end
+	end
+
+	if not _G.eggESPStarted then
+		_G.eggESPStarted = true
+		RunService.RenderStepped:Connect(updateESP)
+	end
+end)
