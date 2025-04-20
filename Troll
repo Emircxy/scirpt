@@ -1,0 +1,65 @@
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "TeleportGUI"
+gui.ResetOnSpawn = false
+
+-- Ana Çerçeve
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 300, 0, 220)
+frame.Position = UDim2.new(0.5, -150, 0.5, -110)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.Active = true
+frame.Draggable = true
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
+
+-- Logo
+local logo = Instance.new("TextLabel", frame)
+logo.Size = UDim2.new(1, -40, 0, 30)
+logo.Position = UDim2.new(0, 10, 0, 5)
+logo.Text = "Teleport Panel"
+logo.Font = Enum.Font.GothamBold
+logo.TextColor3 = Color3.fromRGB(255, 255, 255)
+logo.TextScaled = true
+logo.BackgroundTransparency = 1
+logo.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Kapatma Butonu
+local close = Instance.new("TextButton", frame)
+close.Text = "X"
+close.Size = UDim2.new(0, 30, 0, 30)
+close.Position = UDim2.new(1, -30, 0, 0)
+close.TextColor3 = Color3.fromRGB(255, 70, 70)
+close.Font = Enum.Font.GothamBold
+close.BackgroundTransparency = 1
+close.TextSize = 20
+close.MouseButton1Click:Connect(function()
+	gui:Destroy()
+end)
+
+-- Teleport 1 (Normal)
+local tp1 = Instance.new("TextButton", frame)
+tp1.Text = "Normal Teleport"
+tp1.Size = UDim2.new(0.9, 0, 0, 40)
+tp1.Position = UDim2.new(0.05, 0, 0, 60)
+tp1.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+tp1.TextColor3 = Color3.new(1, 1, 1)
+tp1.Font = Enum.Font.Gotham
+tp1.TextScaled = true
+Instance.new("UICorner", tp1).CornerRadius = UDim.new(0, 6)
+tp1.MouseButton1Click:Connect(function()
+	player.Character:MoveTo(Vector3.new(280.204, 347.146, -37.154))
+end)
+
+-- Teleport 2 (Özel bölge)
+local tp2 = Instance.new("TextButton", frame)
+tp2.Text = "Gamepass Teleport"
+tp2.Size = UDim2.new(0.9, 0, 0, 40)
+tp2.Position = UDim2.new(0.05, 0, 0, 115)
+tp2.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+tp2.TextColor3 = Color3.new(1, 1, 1)
+tp2.Font = Enum.Font.Gotham
+tp2.TextScaled = true
+Instance.new("UICorner", tp2).CornerRadius = UDim.new(0, 6)
+tp2.MouseButton1Click:Connect(function()
+	player.Character:MoveTo(Vector3.new(-34.655, -2.853, -71.746))
+end)
